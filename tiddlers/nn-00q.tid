@@ -1,0 +1,7 @@
+created: 20170824140919370
+modified: 20170824141216583
+tags: 
+title: nn-00q
+titletext: Make some arbitrary limits to depth and list length.
+
+There should be indicator graphics to show when there is content past these limits, and settings for the user to change them. The top level current list should allow full length of it's list, and users can simply navigate to view notes nested past the depth limit.

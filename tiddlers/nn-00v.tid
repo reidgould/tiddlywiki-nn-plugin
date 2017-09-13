@@ -1,0 +1,7 @@
+created: 20170823224907363
+modified: 20170823225057247
+tags: 
+title: nn-00v
+titletext: Protect from circular references.
+
+The method we are using does not benefit from TiddlyWiki's detection of circular references when using the transclude widget.

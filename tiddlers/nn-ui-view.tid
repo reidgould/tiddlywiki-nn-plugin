@@ -1,0 +1,83 @@
+created: 20170822192759974
+modified: 20170825214627702
+tags: 
+title: nn/ui/view
+
+\define NNRoot()
+$(currentTiddler)$-Root
+\end
+\define currentStoryList()
+$(currentTiddler)$-StoryList
+\end
+\define currentHistoryList()
+$(currentTiddler)$-HistoryList
+\end
+\define StateDisplayText()
+$(NNViewTiddler)$-DisplayText
+\end
+\define breadcrumbActions()
+<$set name="listToRemove" filter="[list<currentStoryList>allafter<breadcrumbTiddler>]">
+<$action-listops $tiddler=<<currentStoryList>> $subfilter="+[remove<listToRemove>]" />
+</$set>
+\end
+\define ViewNNActions()
+<$set name="NNRootText" value={{$(currentTiddler)$-Root!!text}} >
+<$action-listops $tiddler=<<currentStoryList>> $filter="[enlist<NNRootText>]" />
+</$set>
+\end
+\define NestedNote(path)
+<$set name="nn-state" value=<<qualify """nn/state/$(currentTiddler)$""">> >  <!-- nn/state/$path$/$(currentTiddler)$ -->
+  <div class="nn-nested">
+    <$reveal state=<<nn-state>> type="match" text="closed" default="open" animate="no" retain="no" tag="span" class="nn-reveal-button">
+      <$button actions="""<$action-deletetiddler $tiddler=<<nn-state>> />""" class="tc-btn-invisible">{{$:/core/images/right-arrow}}</$button>
+    </$reveal>
+    <$reveal state=<<nn-state>> type="nomatch" text="closed" default="open" animate="no" retain="no" tag="span" class="nn-reveal-button">
+      <$button set=<<nn-state>> setTo="closed" class="tc-btn-invisible">{{$:/core/images/down-arrow}}</$button>
+    </$reveal>
+    <$set name="titleDisplay" filter="[<currentTiddler>has[titletext]]" value="titletext" emptyValue="title">
+      <h3 class="nn-h3"><$link to={{!!title}}><$transclude field=<<titleDisplay>> mode="inline" /></$link></h3>
+    </$set>
+    <$reveal state=<<nn-state>> type="nomatch" text="closed" default="open" animate="no" retain="no" tag="div" class="nn-reveal">
+      <$reveal state=<<StateDisplayText>> type="nomatch" text="no" default="yes" animate="no" retain="no" tag="div">
+        <$transclude field="text" mode="inline" />
+      </$reveal>
+      <$list filter="[list<currentTiddler>]">
+        <$macrocall $name="NestedNote" path="$(currentTiddler)$" />  <!-- $path$/$(currentTiddler)$ -->
+      </$list>
+    </$reveal>
+  </div>
+</$set>
+\end
+<!-- ################################################################ -->
+<$set name="NNViewTiddler" value=<<currentTiddler>> >
+<$checkbox tiddler=<<StateDisplayText>> field="text" checked="yes" unchecked="no" default="yes">Display "text" field content.</$checkbox>
+<div class="nn-breadcrumb">
+  <div class="nn-breadcrumb-child">
+    <$button actions=<<ViewNNActions>> >View</$button>
+    <$edit-text tiddler=<<NNRoot>> tag=input />
+    <$button set=<<NNRoot>> setTo="" actions="""<$action-setfield $tiddler=<<currentStoryList>> $field="list" $value="">""" class="tc-btn-invisible">{{$:/core/images/close-button}}</$button>
+  </div>
+  <$list filter="[list<currentStoryList>butlast[]]" variable="breadcrumbTiddler">
+    <div class="nn-breadcrumb-child">
+      <$button actions=<<breadcrumbActions>> class="buttonLikeLink">
+        <$set name="titleDisplay" filter="[<currentTiddler>has[titletext]]" value="titletext" emptyValue="title">
+          <$transclude tiddler=<<breadcrumbTiddler>> field=<<titleDisplay>> />
+        </$set>
+      </$button>
+    </div>
+  </$list>
+</div>
+<$navigator story=<<currentStoryList>> history=<<currentHistoryList>> openLinkFromInsideRiver="bottom" openLinkFromOutsideRiver="bottom" relinkOnRename={{$:/config/RelinkOnRename}}>
+  <$list filter="[list<currentStoryList>last[1]]" emptyMessage="Choose a tiddler to view it's nested notes." >
+    <$set name="titleDisplay" filter="[<currentTiddler>has[titletext]]" value="titletext" emptyValue="title">
+      <h2 class="nn-h2"><$link to={{!!title}}><$transclude field=<<titleDisplay>> mode="inline" /></$link></h2>
+    </$set>
+    <$reveal state=<<StateDisplayText>> type="nomatch" text="no" default="yes" animate="no" retain="no" tag="div">
+      <$transclude field="text" mode="inline" />
+    </$reveal>
+    <$list filter="[list<currentTiddler>]">
+      <$macrocall $name="NestedNote" path=<<currentTiddler>> />
+    </$list>
+  </$list>
+</$navigator>
+</$set>

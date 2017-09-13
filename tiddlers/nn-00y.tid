@@ -1,0 +1,6 @@
+created: 20170822215117383
+modified: 20170823222741092
+title: nn-00y
+titletext: Include intermediate notes.
+
+When selecting a note nested more than 1 below the current top level, intermediate notes are not added to the breadcrumb list.

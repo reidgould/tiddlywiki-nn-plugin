@@ -1,0 +1,54 @@
+created: 20170822175704972
+modified: 20170825003132999
+tags: $:/tags/Stylesheet
+title: nn/ui/stylesheet
+
+\rules only filteredtranscludeinline transcludeinline macrodef macrocallinline hardlinebreaks html commentinline commentblock 
+<!--  This rule set prevents unwanted interpretation of wikitext syntax inside a stylesheet or macro definition tiddler. -->
+<!-- Style html tag not not needed when tiddler has $:/tags/Stylesheet tag. This is preferable because it allows us to see the text when the tiddler is open, and also prevents styles without the tag from applying just because the tiddler is open on the page. -->
+"""
+
+.nn-breadcrumb {
+  width: 100%;
+  margin-bottom: .5em;
+}
+.nn-breadcrumb-child {
+  border-color: silver;
+  border-style: none none dashed none;
+  border-width: 0 0 1px 0;
+}
+.nn-breadcrumb-child:first-child {
+  padding-bottom: 0.25em;
+}
+.nn-breadcrumb-child:last-child {
+  border-style: none none solid none;
+}
+
+
+.nn-nested {
+  position: relative;
+  padding: 0 0 0 2em;
+  margin-top: 0.5em;
+  line-height: 1.25em;
+}
+.nn-h2 {
+  margin-bottom: 0.25em;
+}
+.nn-h2 + p {
+  margin: 0 0 0.5em 0;
+}
+.nn-h3 {
+  display: inline;
+}
+.nn-h3 + div > p {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+}
+.nn-reveal-button {
+  position: absolute;
+  left: 0.75em;
+}
+
+"""
